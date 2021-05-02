@@ -13,24 +13,31 @@ type TodoListPropsType = {
     changeTaskStatus: (taskId: string, newIsDoneValue: boolean, todoListID: string) => void
     removeTodoList: (todoListID: string) => void
 }
-function TodoList({todoListID, filter,
+
+function TodoList({
+                      todoListID, filter,
                       tasks,
                       title: tlTitle,
                       addTask,
-                      removeTask:tlRemoveTask,
-                        changeTaskStatus,
-                        removeTodoList,
-                      changeFilter}: TodoListPropsType) {
+                      removeTask: tlRemoveTask,
+                      changeTaskStatus,
+                      removeTodoList,
+                      changeFilter
+                  }: TodoListPropsType) {
     // const {filter, tasks, title: tlTitle, addTask, removeTask, changeFilter} = props;
     const [title, setTitle] = useState<string>("");
     const [error, setError] = useState<boolean>(false);
-    const tasksJSXElements = tasks.map(t =>{
-        const removeTask = () => {tlRemoveTask(t.id, todoListID)}
-        const tlChangeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {changeTaskStatus(t.id, e.currentTarget.checked, todoListID)}
+    const tasksJSXElements = tasks.map(t => {
+        const removeTask = () => {
+            tlRemoveTask(t.id, todoListID)
+        }
+        const tlChangeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
+            changeTaskStatus(t.id, e.currentTarget.checked, todoListID)
+        }
         return (
             <li className={t.isDone ? "is-done" : ""}>
                 <input
-                    onChange= {tlChangeTaskStatus}
+                    onChange={tlChangeTaskStatus}
                     type="checkbox"
                     checked={t.isDone}/>
                 <span>{t.title}</span>
@@ -40,7 +47,7 @@ function TodoList({todoListID, filter,
     })
     const onClickAddTask = () => {
         const trimmedTitle = title.trim()
-        if(trimmedTitle){
+        if (trimmedTitle) {
             addTask(trimmedTitle, todoListID)
         } else {
             setError(true)
@@ -49,7 +56,7 @@ function TodoList({todoListID, filter,
     }
 
     const onKeyPressAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
-        if(e.key === "Enter"){
+        if (e.key === "Enter") {
             onClickAddTask()
         }
     }
@@ -67,12 +74,14 @@ function TodoList({todoListID, filter,
         : null
     return (
         <div>
-            <h3>{tlTitle} <button onClick={onClickRemoveTodoList}>x</button></h3>
+            <h3>{tlTitle}
+                <button onClick={onClickRemoveTodoList}>x</button>
+            </h3>
             <div>
                 <input className={error ? "error" : ""}
-                    value={title}
-                    onChange={onChangeTitle}
-                    onKeyPress={onKeyPressAddTask}
+                       value={title}
+                       onChange={onChangeTitle}
+                       onKeyPress={onKeyPressAddTask}
                 />
                 <button onClick={onClickAddTask}>+</button>
                 {errorMessage}
@@ -82,11 +91,14 @@ function TodoList({todoListID, filter,
             </ul>
             <div>
                 <button className={filter === "all" ? "active-filter" : ""}
-                        name = "all" onClick={onClickAllFilter}>All</button>
+                        name="all" onClick={onClickAllFilter}>All
+                </button>
                 <button className={filter === "active" ? "active-filter" : ""}
-                    name = "active" onClick={onClickActiveFilter}>Active</button>
+                        name="active" onClick={onClickActiveFilter}>Active
+                </button>
                 <button className={filter === "completed" ? "active-filter" : ""}
-                    name ="completed" onClick={onClickCompletedFilter}>Completed</button>
+                        name="completed" onClick={onClickCompletedFilter}>Completed
+                </button>
             </div>
         </div>
     )
