@@ -8,7 +8,7 @@ export function AddItemForm(props: AddItemPropsType){
     const [title, setTitle] = useState<string>("");
     const [error, setError] = useState<boolean>(false);
 
-    const addItem = () => {
+    const onClickAddItem = () => {
         const trimmedTitle = title.trim()
         if (trimmedTitle) {
             props.addItem(title)
@@ -17,9 +17,9 @@ export function AddItemForm(props: AddItemPropsType){
         }
         setTitle("")
     }
-    const onKeyPressAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyPressAddItem = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            addItem()
+            onClickAddItem()
         }
     }
     const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,13 +29,14 @@ export function AddItemForm(props: AddItemPropsType){
     const errorMessage = error
         ? <div className="error-message">Title is required</div>
         : null
+
     return <div>
         <input className={error ? "error" : ""}
                value={title}
                onChange={onChangeTitle}
-               onKeyPress={onKeyPressAddTask}
+               onKeyPress={onKeyPressAddItem}
         />
-        <button onClick={addItem}>+</button>
+        <button onClick={onClickAddItem}>+</button>
         {errorMessage}
     </div>
 }

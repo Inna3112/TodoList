@@ -34,7 +34,7 @@ function TodoList({
 
     // const [title, setTitle] = useState<string>("");
     // const [error, setError] = useState<boolean>(false);
-    const addTaskWrap = (title: string) => {
+    const addTaskToAddItemForm = (title: string) => {
         addTask(title, todoListID)
     }
     const tasksJSXElements = tasks.map(t => {
@@ -93,7 +93,7 @@ function TodoList({
                 <EditableSpan title={tlTitle} changeTitle={changeTodoListTitle} />
                 <button onClick={onClickRemoveTodoList}>x</button>
             </h3>
-            <AddItemForm addItem={addTaskWrap}/>
+            <AddItemForm addItem={addTaskToAddItemForm}/>
             {/*<div>*/}
             {/*    <input className={error ? "error" : ""}*/}
             {/*           value={title}*/}
