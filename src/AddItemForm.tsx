@@ -1,4 +1,6 @@
 import React, {useState, KeyboardEvent, ChangeEvent, MouseEvent} from 'react';
+import {AddBox, Delete} from "@material-ui/icons";
+import {IconButton, TextField} from "@material-ui/core";
 
 type AddItemPropsType = {
     addItem: (title: string) => void
@@ -26,17 +28,30 @@ export function AddItemForm(props: AddItemPropsType){
         setTitle(e.currentTarget.value)
         setError(false)
     }
-    const errorMessage = error
-        ? <div className="error-message">Title is required</div>
-        : null
+    // const errorMessage = error
+    //     ? <div className="error-message">Title is required</div>
+    //     : null
 
     return <div>
-        <input className={error ? "error" : ""}
-               value={title}
-               onChange={onChangeTitle}
-               onKeyPress={onKeyPressAddItem}
+        <TextField
+            variant={"outlined"}
+            error={error}
+            value={title}
+            onChange={onChangeTitle}
+            onKeyPress={onKeyPressAddItem}
+            label={"Title"}
+            helperText={error && "Title is requared"}
+            size={"small"}
         />
-        <button onClick={onClickAddItem}>+</button>
-        {errorMessage}
+        {/*<input className={error ? "error" : ""}*/}
+        {/*       value={title}*/}
+        {/*       onChange={onChangeTitle}*/}
+        {/*       onKeyPress={onKeyPressAddItem}*/}
+        {/*/>*/}
+        {/*<button onClick={onClickAddItem}>+</button>*/}
+        <IconButton onClick={onClickAddItem} color={"primary"}>
+            <AddBox/>
+        </IconButton>
+        {/*{errorMessage}*/}
     </div>
 }
