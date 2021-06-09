@@ -1,9 +1,11 @@
-import React, {useState, KeyboardEvent, ChangeEvent, MouseEvent} from 'react';
+import React, {useCallback} from 'react';
 import {FilterValuesType, TaskType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
-import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
+import {Task} from "./Task";
+
 
 
 type TodoListPropsType = {
@@ -20,7 +22,7 @@ type TodoListPropsType = {
     changeTodoListTitle: (newTitle: string, todoListID: string) => void
 }
 
-function TodoList({
+const TodoList = React.memo(({
                       todoListID, filter,
                       tasks,
                       title: tlTitle,
@@ -31,51 +33,39 @@ function TodoList({
                       removeTodoList,
                       changeFilter,
                       changeTodoListTitle: tlChangeTodoListTitle
-                  }: TodoListPropsType) {
+                  }: TodoListPropsType) => {
     // const {filter, tasks, title: tlTitle, addTask, removeTask, changeFilter} = props;
-
-    const addTaskToAddItemForm = (title: string) => {
+    console.log('Todolist')
+    const addTaskToAddItemForm = useCallback((title: string) => {
         addTask(title, todoListID)
+    }, [todoListID, addTask])
+    function getTasksForTodolist() {
+        switch (filter) {
+            case "active":
+                return tasks.filter(t => !t.isDone)
+            case "completed":
+                return tasks.filter(t => t.isDone)
+            default:
+                return tasks
+        }
     }
-    const tasksJSXElements = tasks.map(t => {
-        const removeTask = () => {
-            tlRemoveTask(t.id, todoListID)
-        }
-        const tlChangeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-            changeTaskStatus(t.id, e.currentTarget.checked, todoListID)
-        }
-        const changeTaskTitle = (title: string) => {
-            tlChangeTaskTitle(t.id, title, todoListID)
-        }
-        return (
-            <li>
-                <span className={t.isDone ? "is-done" : ""}>
-                    <Checkbox
-                        color={"primary"}
-                        onChange={tlChangeTaskStatus}
-                        checked={t.isDone}
-                    />
-                    {/*<input*/}
-                    {/*    onChange={tlChangeTaskStatus}*/}
-                    {/*    type="checkbox"*/}
-                    {/*    checked={t.isDone}/>*/}
-                    {/*<span>{t.title}</span>*/}
-                    <EditableSpan title={t.title} changeTitle={changeTaskTitle}/>
-                </span>
-                {/*<button onClick={removeTask}>x</button>*/}
-                <IconButton onClick={removeTask}>
-                    <Delete/>
-                </IconButton>
-            </li>
+    let newTasks = getTasksForTodolist()
+    const tasksJSXElements = newTasks.map(t => {
+        return ( <Task key={t.id}
+                       task={t}
+                       todoListId={todoListID}
+                       changeTaskStatus={changeTaskStatus}
+                       changeTaskTitle={tlChangeTaskTitle}
+                       removeTask={tlRemoveTask} />
         )
     })
 
 
-    const onClickAllFilter = () => changeFilter("all", todoListID)
-    const onClickActiveFilter = () => changeFilter("active", todoListID)
-    const onClickCompletedFilter = () => changeFilter("completed", todoListID)
-    const onClickRemoveTodoList = () => removeTodoList(todoListID)
-    const changeTodoListTitle = (title: string) => tlChangeTodoListTitle(title, todoListID)
+    const onClickAllFilter = useCallback(() => changeFilter("all", todoListID), [todoListID, changeFilter])
+    const onClickActiveFilter = useCallback(() => changeFilter("active", todoListID), [todoListID, changeFilter])
+    const onClickCompletedFilter = useCallback(() => changeFilter("completed", todoListID), [todoListID, changeFilter])
+    const onClickRemoveTodoList = useCallback(() => removeTodoList(todoListID), [todoListID, removeTodoList])
+    const changeTodoListTitle = useCallback((title: string) => tlChangeTodoListTitle(title, todoListID), [tlChangeTodoListTitle, todoListID])
     // const errorMessage = error
     //     ? <div className="error-message">Title is required</div>
     //     : null
@@ -118,6 +108,6 @@ function TodoList({
             </div>
         </div>
     )
-}
+})
 
 export default TodoList;

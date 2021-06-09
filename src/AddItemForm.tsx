@@ -1,12 +1,12 @@
-import React, {useState, KeyboardEvent, ChangeEvent, MouseEvent} from 'react';
-import {AddBox, Delete} from "@material-ui/icons";
+import React, {useState, KeyboardEvent, ChangeEvent} from 'react';
+import {AddBox} from "@material-ui/icons";
 import {IconButton, TextField} from "@material-ui/core";
 
 type AddItemPropsType = {
     addItem: (title: string) => void
 }
 
-export function AddItemForm(props: AddItemPropsType){
+export const AddItemForm = React.memo((props: AddItemPropsType) => {
     const [title, setTitle] = useState<string>("");
     const [error, setError] = useState<boolean>(false);
 
@@ -54,4 +54,4 @@ export function AddItemForm(props: AddItemPropsType){
         </IconButton>
         {/*{errorMessage}*/}
     </div>
-}
+})
