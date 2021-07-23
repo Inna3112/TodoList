@@ -1,13 +1,13 @@
 import React, {ChangeEvent, useCallback} from "react";
-import {TaskType} from "./AppWithReducers";
 import {Checkbox, IconButton} from "@material-ui/core";
 import EditableSpan from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
+import {TaskStatuses, TaskType} from "./dal/todolist-api";
 
 type PropsType = {
     task: TaskType
     todoListId: string
-    changeTaskStatus: (taskId: string, newIsDoneValue: boolean, todoListID: string) => void
+    changeTaskStatus: (taskId: string, newStatus: TaskStatuses, todoListID: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todoListID: string) => void
     removeTask: (taskId: string, todoListID: string) => void
 }
@@ -20,7 +20,8 @@ export const Task = React.memo(({
                                 }: PropsType) => {
 
     const tlChangeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        changeTaskStatus(task.id, e.currentTarget.checked, todoListId)
+        let newIsDoneValue = e.currentTarget.checked
+        changeTaskStatus(task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, todoListId)
     }, [task.id, todoListId, changeTaskStatus])
     const changeTaskTitleHandler = useCallback((title: string) => {
         changeTaskTitle(task.id, task.title, todoListId)
@@ -30,11 +31,11 @@ export const Task = React.memo(({
     }, [task.id, todoListId, removeTask])
     return (
         <div>
-                <span className={task.isDone ? "is-done" : ""}>
+                <span className={task.status === TaskStatuses.Completed ? "is-done" : ""}>
                     <Checkbox
                         color={"primary"}
                         onChange={tlChangeTaskStatus}
-                        checked={task.isDone}
+                        checked={task.status === TaskStatuses.Completed}
                     />
                     {/*<input*/}
                     {/*    onChange={tlChangeTaskStatus}*/}

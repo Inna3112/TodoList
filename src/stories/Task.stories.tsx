@@ -1,8 +1,8 @@
 import React from 'react';
-import {ComponentStory, ComponentMeta} from '@storybook/react';
+import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {action} from "@storybook/addon-actions";
 import {Task} from "../Task";
-
+import {TaskStatuses} from "../dal/todolist-api";
 
 
 export default {
@@ -25,13 +25,15 @@ const baseArgs = {
 export const TaskIsDoneExample = Template.bind({});
 TaskIsDoneExample.args = {
     ...baseArgs,
-    task: {id: '1', isDone: true, title: 'JS'},
+    task: {id: '1', status: TaskStatuses.Completed, title: 'JS', order: 0, todoListId: '',
+        startDate: '', addedDate: '', priority: 0, description: '', deadline: ''},
     todoListId: 'todolist1'
 }
 
 export const TaskIsNotDoneExample = Template.bind({});
 TaskIsNotDoneExample.args = {
     ...baseArgs,
-    task: {id: '1', isDone: false, title: 'JS'},
+    task: {id: '1', status: TaskStatuses.New, title: 'JS', order: 0, todoListId: '',
+        startDate: '', addedDate: '', priority: 0, description: '', deadline: ''},
     todoListId: 'todolist1'
 }

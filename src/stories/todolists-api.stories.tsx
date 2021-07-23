@@ -167,8 +167,8 @@ export const UpdateTask = () => {
         const description = 'learn htmllllll'
         const status = 1
         const priority = 3
-        const startDate = null
-        const deadline = null
+        const startDate = ''
+        const deadline = ''
         taskAPI.updateTask(todoId, taskId, {title, description, status, priority, startDate, deadline})
             .then((res) => {
                 setState(res.data)

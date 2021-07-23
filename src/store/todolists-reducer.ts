@@ -1,5 +1,6 @@
-import {FilterValuesType, TodoListType} from "../App";
+
 import {v1} from "uuid";
+import {TodolistType} from "../dal/todolist-api";
 
  export type RemoveTodoListAT = {
     type: 'REMOVE-TODOLIST'
@@ -24,19 +25,22 @@ export type ActionsType = RemoveTodoListAT | AddTodoListAT | ChangeTodoListTitle
 
 export const todoListID_1 = v1()
 export const todoListID_2 = v1()
-let initialState: Array<TodoListType> = [
-    {id: todoListID_1, title: 'What to learn', filter: 'all'},
-    {id: todoListID_2, title: 'What to bue', filter: 'all'}
+let initialState: Array<TodoListEntityType> = [
+    {id: todoListID_1, title: 'What to learn', filter: 'all', addedDate: '', order: 1},
+    {id: todoListID_2, title: 'What to bue', filter: 'all', addedDate: '', order: 1}
 ]
 export type InitialTodoListsStateType = typeof initialState
-
+export type FilterValuesType = "all" | "active" | "completed"
+export type TodoListEntityType = TodolistType & {
+     filter: FilterValuesType
+}
 export const todoListsReducer = (todoLists = initialState, action: ActionsType):InitialTodoListsStateType => {
     switch (action.type){
         case "REMOVE-TODOLIST":
             return todoLists.filter(tl => tl.id !== action.todoListID)
         case "ADD-TODOLIST":
             const newTodoListID = action.todoListId
-            const newTodoList: TodoListType = {id: newTodoListID, title: action.title, filter: 'all'}
+            const newTodoList: TodoListEntityType = {id: newTodoListID, title: action.title, filter: 'all', addedDate: '', order: 0}
             return [...todoLists, newTodoList]
         case "CHANGE-TODOLIST-TITLE":
             return todoLists.map(tl => tl.id === action.todoListID ? {...tl, title: action.newTitle} : tl)

@@ -13,13 +13,26 @@ export type TodolistType = {
     addedDate: string
     order: number
 }
+export enum TaskStatuses {
+    New,
+    InProgress,
+    Completed,
+    Draft
+}
+export enum TaskPriorities {
+    Low,
+    Middle,
+    Hi,
+    Urgently,
+    Later
+}
 export type TaskType = {
-    description: string | null
+    description: string
     title: string
-    status: number
-    priority: number
-    startDate: string | null
-    deadline: string | null
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
     id: string
     todoListId: string
     order: number
