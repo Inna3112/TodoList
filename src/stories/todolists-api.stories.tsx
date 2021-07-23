@@ -1,17 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import axios from "axios";
-import {todolistAPI} from "../dal/todolist-api";
+import {taskAPI, todolistAPI} from "../dal/todolist-api";
 
 export default {
     title: 'API'
 }
-const settings = {
-    withCredentials: true,
-    headers: {
-        'API-KEY': 'a585aace-28a5-48d9-b1ef-e81ab36cf848'
-    }
-}
-
 
 export const GetTodolists = () => {
     const [state, setState] = useState<any>(null)
@@ -54,6 +46,65 @@ export const UpdateTodolistTitle = () => {
     const title = 'CSS'
     useEffect(() => {
         todolistAPI.updateTodo(todoId, title)
+            .then((res) => {
+                setState(res.data)
+            })
+    }, [])
+
+    return <div> {JSON.stringify(state)}</div>
+}
+
+export const GetTasks = () => {
+    const [state, setState] = useState<any>(null)
+    useEffect(() => {
+        const todoId = '88db940e-1aa8-49b1-9c31-cf118ad09e19'
+        taskAPI.getTasks(todoId)
+            .then((res) => {
+                setState(res.data)
+            })
+    }, [])
+
+    return <div> {JSON.stringify(state)}</div>
+}
+export const CreateTask = () => {
+    const [state, setState] = useState<any>(null)
+    useEffect(() => {
+        const todoId = '88db940e-1aa8-49b1-9c31-cf118ad09e19'
+        const taskTitle = 'Learn JS'
+        taskAPI.createTask(todoId, taskTitle)
+            .then((res) => {
+                setState(res.data.data)
+            })
+    }, [])
+
+    return <div> {JSON.stringify(state)}</div>
+}
+export const DeleteTask = () => {
+    const [state, setState] = useState<any>(null)
+    useEffect(() => {
+        const todoId = '88db940e-1aa8-49b1-9c31-cf118ad09e19'
+        const taskId = 'c6ea3311-56b4-4802-9ff8-c775005f91d3'
+        taskAPI.deleteTask(todoId, taskId)
+            .then((res) => {
+                setState(res.data)
+            })
+    }, [])
+
+    return <div> {JSON.stringify(state)}</div>
+}
+export const UpdateTask = () => {
+    const [state, setState] = useState<any>(null)
+    useEffect(() => {
+        const todoId = '88db940e-1aa8-49b1-9c31-cf118ad09e19'
+        const taskId = 'ef844dc3-7e50-4d14-9e88-276beb89065c'
+        const title = 'HTML'
+        const description = 'learn html'
+        const status = 1
+        const priority = 3
+        const startDate = null
+        const deadLine = null
+        const completed = false
+        taskAPI.updateTask(todoId, taskId, title, description, status, priority, startDate, deadLine)
             .then((res) => {
                 setState(res.data)
             })

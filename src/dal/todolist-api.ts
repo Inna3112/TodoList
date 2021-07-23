@@ -13,12 +13,44 @@ type TodolistType = {
     addedDate: string
     order: number
 }
+type TaskType = {
+    description: string | null
+    title: string
+    // completed: boolean
+    status: number
+    priority: number
+    startDate: string | null
+    deadline: string | null
+    id: string
+    todoListId: string
+    order: number
+    addedDate: string
+}
+type TaskTypePutRequestType = {
+    description: string | null
+    title: string
+    status: number
+    priority: number
+    startDate: string | null
+    deadline: string | null
+    id: string
+    todoListId: string
+    order: number
+    addedDate: string
+    todoList: null
+}
+
 export type GetTodoResponseType = TodolistType[]
 export type CommonResponseType<T = {}> = {
     resultCode: number
     fieldsErrors: string[]
     messages: string[]
     data: T
+}
+export type GetTasksResponseType = {
+    error: string | null
+    items: TaskType[]
+    totalCount: number
 }
 export const todolistAPI = {
     getTodo(){
@@ -32,5 +64,26 @@ export const todolistAPI = {
     },
     updateTodo(todoId: string, title: string){
         return instance.put<CommonResponseType>(`todo-lists/${todoId}`, {title})
+    }
+}
+export const taskAPI = {
+    getTasks(todoId: string){
+        return instance.get<GetTasksResponseType>(`todo-lists/${todoId}/tasks`)
+    },
+    createTask(todoId: string, title: string){
+        return instance.post<CommonResponseType<TaskType>>(`todo-lists/${todoId}/tasks`, {title})
+    },
+    deleteTask(todolistId: string, taskId: string){
+        return instance.delete<CommonResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
+    },
+    updateTask(todolistId: string, taskId: string, title: string, description: string, status: number, priority: number, startDate: string|null, deadline: string|null){
+        return instance.put<CommonResponseType<TaskTypePutRequestType>>(`/todo-lists/${todolistId}/tasks/${taskId}`, {
+            title,
+            description,
+            status,
+            priority,
+            startDate,
+            deadline,
+        })
     }
 }
