@@ -16,7 +16,6 @@ type TodolistType = {
 type TaskType = {
     description: string | null
     title: string
-    // completed: boolean
     status: number
     priority: number
     startDate: string | null
@@ -38,6 +37,14 @@ type TaskTypePutRequestType = {
     order: number
     addedDate: string
     todoList: null
+}
+type UpdateTaskType = {
+    title: string
+    description: string
+    status: number
+    priority: number
+    startDate: string|null
+    deadline: string|null
 }
 
 export type GetTodoResponseType = TodolistType[]
