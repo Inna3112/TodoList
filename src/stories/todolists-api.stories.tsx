@@ -164,12 +164,12 @@ export const UpdateTask = () => {
         const todoId = '88db940e-1aa8-49b1-9c31-cf118ad09e19'
         const taskId = 'ef844dc3-7e50-4d14-9e88-276beb89065c'
         const title = 'HTML'
-        const description = 'learn html'
+        const description = 'learn htmllllll'
         const status = 1
         const priority = 3
         const startDate = null
-        const deadLine = null
-        taskAPI.updateTask(todoId, taskId, title, description, status, priority, startDate, deadLine)
+        const deadline = null
+        taskAPI.updateTask(todoId, taskId, {title, description, status, priority, startDate, deadline})
             .then((res) => {
                 setState(res.data)
             })

@@ -38,7 +38,7 @@ type TaskTypePutRequestType = {
     addedDate: string
     todoList: null
 }
-type UpdateTaskType = {
+type UpdateTaskModel = {
     title: string
     description: string
     status: number
@@ -83,14 +83,7 @@ export const taskAPI = {
     deleteTask(todolistId: string, taskId: string){
         return instance.delete<CommonResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
     },
-    updateTask(todolistId: string, taskId: string, title: string, description: string, status: number, priority: number, startDate: string|null, deadline: string|null){
-        return instance.put<CommonResponseType<TaskTypePutRequestType>>(`/todo-lists/${todolistId}/tasks/${taskId}`, {
-            title,
-            description,
-            status,
-            priority,
-            startDate,
-            deadline,
-        })
+    updateTask(todolistId: string, taskId: string, model: UpdateTaskModel){
+        return instance.put<CommonResponseType<TaskTypePutRequestType>>(`/todo-lists/${todolistId}/tasks/${taskId}`, model)
     }
 }
