@@ -1,24 +1,24 @@
 import {
     ActionsType,
     addTodoListAC, changeFilterAC,
-    changeTodoListTitleAC,
-    removeTodoListAC,
+    changeTodoListTitleAC, FilterValuesType,
+    removeTodoListAC, TodoListEntityType,
     todoListsReducer
 } from './todolists-reducer';
 import {v1} from 'uuid';
-import {FilterValuesType, TodoListType} from '../App';
+
 
 let todolistId1: string
 let todolistId2: string
 
-let startState: Array<TodoListType>
+let startState: Array<TodoListEntityType>
 
 beforeEach(() => {
    todolistId1 = v1();
    todolistId2 = v1();
    startState = [
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"},
+        {id: todolistId1, title: "What to learn", filter: "all", order: 0, addedDate: ''},
+        {id: todolistId2, title: "What to buy", filter: "all", order: 0, addedDate: ''},
     ]
 })
 test('correct todolist should be removed', () => {
