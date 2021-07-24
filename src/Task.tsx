@@ -24,7 +24,7 @@ export const Task = React.memo(({
         changeTaskStatus(task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, todoListId)
     }, [task.id, todoListId, changeTaskStatus])
     const changeTaskTitleHandler = useCallback((title: string) => {
-        changeTaskTitle(task.id, task.title, todoListId)
+        changeTaskTitle(task.id, title, todoListId)
     }, [task.id, task.title, todoListId, changeTaskTitle])
     const removeTaskHandler = useCallback(()=> {
         removeTask(task.id, todoListId)
