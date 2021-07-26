@@ -24,6 +24,11 @@ type ChangeTaskTitleAT = {
     newTitle: string
     todoListID: string
 }
+type SetTasksAT = {
+    type: 'SET-TASKS'
+    tasks: Array<TaskType>
+    todoListID: string
+}
 
 export type ActionsType =
     RemoveTaskAT
@@ -32,36 +37,49 @@ export type ActionsType =
     | ChangeTaskTitleAT
     | AddTodoListAT
     | RemoveTodoListAT
-| SetTodoListsAT
+    | SetTodoListsAT
+    | SetTasksAT
 
 
 let initialState = {
-        [todoListID_1]: [
-            {id: v1(), title: "HTML", status: TaskStatuses.Completed,
-                todoListId: todoListID_1, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
-            {id: v1(), title: "CSS", status: TaskStatuses.Completed,
-                todoListId: todoListID_1, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
-            {id: v1(), title: "JS", status: TaskStatuses.New,
-                todoListId: todoListID_1, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''}
-        ],
-        [todoListID_2]: [
-            {id: v1(), title: "Milk", status: TaskStatuses.Completed,
-                todoListId: todoListID_2, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
-            {id: v1(), title: "Meat", status: TaskStatuses.Completed,
-                todoListId: todoListID_2, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
-            {id: v1(), title: "Bread", status: TaskStatuses.New,
-                todoListId: todoListID_2, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''}
-        ],
+    [todoListID_1]: [
+        {
+            id: v1(), title: "HTML", status: TaskStatuses.Completed,
+            todoListId: todoListID_1, description: '', addedDate: '',
+            deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
+        },
+        {
+            id: v1(), title: "CSS", status: TaskStatuses.Completed,
+            todoListId: todoListID_1, description: '', addedDate: '',
+            deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
+        },
+        {
+            id: v1(), title: "JS", status: TaskStatuses.New,
+            todoListId: todoListID_1, description: '', addedDate: '',
+            deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
+        }
+    ],
+    [todoListID_2]: [
+        {
+            id: v1(), title: "Milk", status: TaskStatuses.Completed,
+            todoListId: todoListID_2, description: '', addedDate: '',
+            deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
+        },
+        {
+            id: v1(), title: "Meat", status: TaskStatuses.Completed,
+            todoListId: todoListID_2, description: '', addedDate: '',
+            deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
+        },
+        {
+            id: v1(), title: "Bread", status: TaskStatuses.New,
+            todoListId: todoListID_2, description: '', addedDate: '',
+            deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
+        }
+    ],
 }
 export type InitialTasksStateType = typeof initialState
-export const tasksReducer = (state = initialState, action: ActionsType): InitialTasksStateType  => {
-    switch (action.type){
+export const tasksReducer = (state = initialState, action: ActionsType): InitialTasksStateType => {
+    switch (action.type) {
         case "REMOVE-TASK":
             // let todoListTasks = state[action.todoListID]
             // state[action.todoListID] = todoListTasks.filter(t => t.id !== action.taskId)
@@ -104,9 +122,9 @@ export const tasksReducer = (state = initialState, action: ActionsType): Initial
                 [action.todoListId]: []
             }
         case "REMOVE-TODOLIST":
-                let copyState = {...state}
-                delete copyState[action.todoListID]
-                return copyState
+            let copyState = {...state}
+            delete copyState[action.todoListID]
+            return copyState
         case "SET-TODOLISTS": {
             let copyState = {...state}
             action.todoLists.forEach(tl => {
@@ -114,21 +132,29 @@ export const tasksReducer = (state = initialState, action: ActionsType): Initial
             })
             return copyState
         }
+        case "SET-TASKS": {
+            let copyState = {...state}
+            copyState[action.todoListID] = action.tasks
+            return copyState
+        }
         default:
             return state
     }
 }
 
-export const removeTaskAC = (taskId: string, todoListID: string): RemoveTaskAT  => {
+export const removeTaskAC = (taskId: string, todoListID: string): RemoveTaskAT => {
     return {type: 'REMOVE-TASK', taskId, todoListID}
 }
 export const addTaskAC = (title: string, todoListID: string): AddTaskAT => {
     return {type: 'ADD-TASK', title, todoListID}
 }
 export const changeTaskStatusAC = (taskId: string, newStatus: TaskStatuses, todoListID: string): ChangeTaskStatusAT => {
-    return  {type: 'CHANGE-TASK-STATUS', taskId, newStatus, todoListID}
+    return {type: 'CHANGE-TASK-STATUS', taskId, newStatus, todoListID}
 }
 export const changeTaskTitleAC = (taskId: string, newTitle: string, todoListID: string): ChangeTaskTitleAT => {
-    return  {type: 'CHANGE-TASK-TITLE', taskId, newTitle, todoListID}
+    return {type: 'CHANGE-TASK-TITLE', taskId, newTitle, todoListID}
+}
+export const setTasksAC = (todoListID: string, tasks: Array<TaskType>): SetTasksAT => {
+    return {type: 'SET-TASKS', todoListID, tasks}
 }
 
