@@ -70,7 +70,7 @@ test('correct filter of todolist should be changed', () => {
     expect(endState[0].filter).toBe("all");
     expect(endState[1].filter).toBe(newFilter);
 });
-test('correct todolists should be set', () => {
+test('correct todolists should be set to state', () => {
 
     const action: ActionsType= {
         type: 'SET-TODOLISTS',

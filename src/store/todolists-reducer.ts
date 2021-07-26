@@ -21,7 +21,7 @@ type ChangeFilterAT = {
     filter: FilterValuesType
     todoListID: string
 }
-type SetTodoListsAT = {
+export type SetTodoListsAT = {
     type: 'SET-TODOLISTS'
     todoLists: Array<TodolistType>
 }

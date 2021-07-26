@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {AddTodoListAT, RemoveTodoListAT, todoListID_1, todoListID_2} from "./todolists-reducer";
+import {AddTodoListAT, RemoveTodoListAT, SetTodoListsAT, todoListID_1, todoListID_2} from "./todolists-reducer";
 import {TaskPriorities, TaskStatuses, TaskType} from "../dal/todolist-api";
 
 type RemoveTaskAT = {
@@ -32,6 +32,7 @@ export type ActionsType =
     | ChangeTaskTitleAT
     | AddTodoListAT
     | RemoveTodoListAT
+| SetTodoListsAT
 
 
 let initialState = {
