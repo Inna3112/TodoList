@@ -2,7 +2,7 @@ import {
     ActionsType,
     addTodoListAC, changeFilterAC,
     changeTodoListTitleAC, FilterValuesType,
-    removeTodoListAC, TodoListEntityType,
+    removeTodoListAC, setTodoListsAC, TodoListEntityType,
     todoListsReducer
 } from './todolists-reducer';
 import {v1} from 'uuid';
@@ -69,6 +69,17 @@ test('correct filter of todolist should be changed', () => {
 
     expect(endState[0].filter).toBe("all");
     expect(endState[1].filter).toBe(newFilter);
+});
+test('correct todolists should be set', () => {
+
+    const action: ActionsType= {
+        type: 'SET-TODOLISTS',
+        todoLists: startState
+    };
+
+    const endState = todoListsReducer([], setTodoListsAC(startState));
+
+    expect(endState.length).toBe(2);
 });
 
 
