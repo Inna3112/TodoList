@@ -78,7 +78,7 @@ export const setTodoListsAC = (todoLists: Array<TodolistType>): SetTodoListsAT =
      }
 }
 
-export const setTodoListsTC = () => {
+export const fetchTodoListsTC = () => {
      return (dispatch: Dispatch) => {
          todolistAPI.getTodo()
              .then(res => {
