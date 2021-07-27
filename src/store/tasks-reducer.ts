@@ -167,4 +167,12 @@ export const fetchTasksTC = (todoId: string) => {
             })
     }
 }
+export const removeTaskTC = (taskId: string, todoId: string) => {
+    return (dispatch: Dispatch) => {
+        taskAPI.deleteTask(todoId, taskId)
+            .then(res => {
+                dispatch(removeTaskAC(taskId, todoId))
+            })
+    }
+}
 
