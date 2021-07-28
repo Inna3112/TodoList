@@ -8,11 +8,13 @@ import {Menu} from '@material-ui/icons';
 import {
     addTodoListAC,
     changeFilterAC,
-    changeTodoListTitleAC, FilterValuesType,
-    removeTodoListAC, TodoListEntityType,
+    changeTodoListTitleAC,
+    FilterValuesType,
+    removeTodoListAC,
+    TodoListEntityType,
     todoListsReducer
 } from './store/todolists-reducer';
-import {tasksReducer, removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskTitleAC} from './store/tasks-reducer';
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './store/tasks-reducer';
 import {TaskPriorities, TaskStatuses} from "./dal/todolist-api";
 
 // export type TaskStateType = {
@@ -58,7 +60,18 @@ function AppWithReducers() {
     }
 
     function addTask(title: string, todoListID: string) {
-        dispatchToTasks(addTaskAC(title, todoListID))
+        dispatchToTasks(addTaskAC({
+            todoListId: todoListID,
+            title: title,
+            status: TaskStatuses.New,
+            id: '',
+            description: '',
+            deadline: '',
+            order: 0,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            addedDate: '',
+        }))
     }
 
     function changeTaskStatus(taskId: string, newStatus: TaskStatuses, todoListID: string) {
