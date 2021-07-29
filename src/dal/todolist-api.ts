@@ -39,11 +39,11 @@ export type TaskType = {
     addedDate: string
 }
 
-type UpdateTaskModel = {
+export type UpdateTaskModel = {
     title: string
     description: string
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string|null
     deadline: string|null
 }
