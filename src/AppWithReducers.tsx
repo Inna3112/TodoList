@@ -14,7 +14,12 @@ import {
     TodoListEntityType,
     todoListsReducer
 } from './store/todolists-reducer';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './store/tasks-reducer';
+import {
+    addTaskAC,
+    removeTaskAC,
+    tasksReducer,
+    updateTaskAC
+} from './store/tasks-reducer';
 import {TaskPriorities, TaskStatuses} from "./dal/todolist-api";
 
 // export type TaskStateType = {
@@ -75,12 +80,12 @@ function AppWithReducers() {
     }
 
     function changeTaskStatus(taskId: string, newStatus: TaskStatuses, todoListID: string) {
-        dispatchToTasks(changeTaskStatusAC(taskId, newStatus,todoListID))
+        dispatchToTasks(updateTaskAC(taskId, {status: newStatus},todoListID))
     }
 
     function changeTaskTitle(taskId: string, newTitle: string, todoListID: string) {
 
-        dispatchToTasks(changeTaskTitleAC(taskId, newTitle, todoListID))
+        dispatchToTasks(updateTaskAC(taskId, {title: newTitle}, todoListID))
     }
 
     function changeFilter(value: FilterValuesType, todoListID: string) {

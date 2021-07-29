@@ -44,8 +44,8 @@ export type UpdateTaskModel = {
     description: string
     status: TaskStatuses
     priority: TaskPriorities
-    startDate: string|null
-    deadline: string|null
+    startDate: string
+    deadline: string
 }
 
 type GetTodoResponseType = TodolistType[]
