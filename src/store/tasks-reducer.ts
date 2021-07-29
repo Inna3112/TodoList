@@ -182,3 +182,11 @@ export const addTaskTC = (todoListID: string, title: string) => (dispatch: Dispa
         })
 }
 
+// export const changeTaskTitleTC = (todoListID: string, title: string) => (dispatch: Dispatch) => {
+//     taskAPI.createTask(todoListID, title)
+//         .then(res => {
+//             let task = res.data.data.item
+//             dispatch(addTaskAC(task))
+//         })
+// }
+
