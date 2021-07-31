@@ -10,7 +10,7 @@ let initialState: Array<TodoListEntityType> = [
     // {id: todoListID_2, title: 'What to bue', filter: 'all', addedDate: '', order: 1}
 ]
 
-export const todoListsReducer = (todoLists = initialState, action: ActionsType): InitialTodoListsStateType => {
+export const todoListsReducer = (todoLists = initialState, action: TodolistActionsType): InitialTodoListsStateType => {
     switch (action.type) {
         case "REMOVE-TODOLIST":
             return todoLists.filter(tl => tl.id !== action.todoListID)
@@ -37,25 +37,25 @@ export const changeFilterAC = (filter: FilterValuesType, todoListID: string) =>
 export const setTodoListsAC = (todoLists: Array<TodolistType>) => ({type: 'SET-TODOLISTS', todoLists} as const)
 
 //thunks
-export const fetchTodoListsTC = () => (dispatch: Dispatch<ActionsType>) => {
+export const fetchTodoListsTC = () => (dispatch: Dispatch<TodolistActionsType>) => {
     todolistAPI.getTodo()
         .then(res => {
             dispatch(setTodoListsAC(res.data))
         })
 }
-export const removeTodoListTC = (todoListID: string) => (dispatch: Dispatch<ActionsType>) => {
+export const removeTodoListTC = (todoListID: string) => (dispatch: Dispatch<TodolistActionsType>) => {
     todolistAPI.deleteTodo(todoListID)
         .then(res => {
             dispatch(removeTodoListAC(todoListID))
         })
 }
-export const addTooListTC = (title: string) => (dispatch: Dispatch<ActionsType>) => {
+export const addTooListTC = (title: string) => (dispatch: Dispatch<TodolistActionsType>) => {
     todolistAPI.createTodo(title)
         .then(res => {
             dispatch(addTodoListAC(res.data.data.item))
         })
 }
-export const changeTodoListTitleTC = (todoTitle: string, todoID: string) => (dispatch: Dispatch<ActionsType>) => {
+export const changeTodoListTitleTC = (todoTitle: string, todoID: string) => (dispatch: Dispatch<TodolistActionsType>) => {
     todolistAPI.updateTodo(todoID, todoTitle)
         .then(res => {
             dispatch(changeTodoListTitleAC(todoTitle, todoID))
@@ -67,7 +67,7 @@ export type RemoveTodoListAT = ReturnType<typeof removeTodoListAC>
 export type AddTodoListAT = ReturnType<typeof addTodoListAC>
 export type SetTodoListAT = ReturnType<typeof setTodoListsAC>
 
-export type ActionsType = RemoveTodoListAT
+export type TodolistActionsType = RemoveTodoListAT
     | AddTodoListAT
     | ReturnType<typeof changeTodoListTitleAC>
     | ReturnType<typeof changeFilterAC>
