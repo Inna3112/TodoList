@@ -1,10 +1,3 @@
-
-type InitialAppStateType = {
-    //происходит ли сейчас взаимодействие с сервером
-    status: 'idle' | 'loading' | 'successed' | 'failed'
-    //если произойдет какая-то глобальная ошибка - мы запишем ее сюда
-    error: string | null
-}
 let initialAppState: InitialAppStateType = {
     status: 'idle',
     error: 'some erorrrr',
@@ -23,11 +16,18 @@ export const appReducer = (state: InitialAppStateType = initialAppState, action:
 }
 
 //actions
-export const removeTodoListAC = (todoListID: string) => ({type: 'REMOVE-TODOLIST', todoListID: todoListID} as const)
+export const setErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
+export const setStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
 
 //thunks
 
 
 //types
-
-type ActionType = any
+export type InitialAppStateType = {
+    //происходит ли сейчас взаимодействие с сервером
+    status: RequestStatusType
+    //если произойдет какая-то глобальная ошибка - мы запишем ее сюда
+    error: string | null
+}
+type ActionType = ReturnType<typeof setErrorAC> | ReturnType<typeof setStatusAC>
+export type RequestStatusType = 'idle' | 'loading' | 'successed' | 'failed'
