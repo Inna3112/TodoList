@@ -1,4 +1,3 @@
-
 import {tasksReducer} from "./tasks-reducer";
 import {addTodoListAC, setTodoListsAC, TodoListEntityType, todoListsReducer} from "./todolists-reducer";
 import {TaskStateType} from "../App/AppWithRedux";
@@ -7,7 +6,7 @@ test('ids should be equals', () => {
     const startTasksState: TaskStateType = {};
     const startTodolistsState: Array<TodoListEntityType> = [];
 
-    const action = addTodoListAC("new todolist");
+    const action = addTodoListAC({title: "new todolist", id: 'todoListId', addedDate: '', order: 0});
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todoListsReducer(startTodolistsState, action)
@@ -16,8 +15,8 @@ test('ids should be equals', () => {
     const idFromTasks = keys[0];
     const idFromTodolists = endTodolistsState[0].id;
 
-    expect(idFromTasks).toBe(action.todoListId);
-    expect(idFromTodolists).toBe(action.todoListId);
+    expect(idFromTasks).toBe(action.todoList.id);
+    expect(idFromTodolists).toBe(action.todoList.id);
 });
 test('empty arrays should be added when we set todolists', () => {
 

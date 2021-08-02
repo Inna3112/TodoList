@@ -1,6 +1,6 @@
 let initialAppState: InitialAppStateType = {
     status: 'idle',
-    error: 'some erorrrr',
+    error: null,
 }
 
 export const appReducer = (state: InitialAppStateType = initialAppState, action: ActionType): InitialAppStateType => {
@@ -21,7 +21,6 @@ export const setStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATU
 
 //thunks
 
-
 //types
 export type InitialAppStateType = {
     //происходит ли сейчас взаимодействие с сервером
@@ -29,5 +28,9 @@ export type InitialAppStateType = {
     //если произойдет какая-то глобальная ошибка - мы запишем ее сюда
     error: string | null
 }
-type ActionType = ReturnType<typeof setErrorAC> | ReturnType<typeof setStatusAC>
+export type SetErrorActionType = ReturnType<typeof setErrorAC>
+export type SetStatusActionType = ReturnType<typeof setStatusAC>
+
+type ActionType = SetErrorActionType | SetStatusActionType
+
 export type RequestStatusType = 'idle' | 'loading' | 'successed' | 'failed'

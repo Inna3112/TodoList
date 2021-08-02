@@ -5,6 +5,9 @@ import {Menu} from '@material-ui/icons';
 import {TaskType} from '../dal/todolist-api';
 import TodoListsList from '../features/Todolists/TodoListsList';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../store/store";
+import { RequestStatusType } from '../store/app-reducer';
 
 
 export type TaskStateType = {
@@ -12,6 +15,9 @@ export type TaskStateType = {
 }
 
 function AppWithRedux() {
+
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+
     return (
         <div>
             <ErrorSnackbar />
@@ -28,7 +34,7 @@ function AppWithRedux() {
                         variant={"outlined"}
                     >Login</Button>
                 </Toolbar>
-                <LinearProgress />
+                { status === 'loading' && <LinearProgress />}
             </AppBar>
             <Container fixed>
                 <TodoListsList/>
