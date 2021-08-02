@@ -7,7 +7,7 @@ import {
 } from "./todolists-reducer";
 import {taskAPI, TaskPriorities, TaskStatuses, TaskType, UpdateTaskModel} from "../dal/todolist-api";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "./store";
+import {AppActionType, AppRootStateType} from "./store";
 
 
 let initialState = {
@@ -47,7 +47,7 @@ let initialState = {
     ],
 }
 export type InitialTasksStateType = typeof initialState
-export const tasksReducer = (state = initialState, action: TaskActionsType): InitialTasksStateType => {
+export const tasksReducer = (state = initialState, action: AppActionType): InitialTasksStateType => {
     switch (action.type) {
         case "REMOVE-TASK":
             // let todoListTasks = state[action.todoListID]
