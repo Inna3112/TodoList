@@ -14,7 +14,11 @@ export type TaskStateType = {
     [key: string]: Array<TaskType>
 }
 
-function AppWithRedux() {
+type PropsType = {
+    demo?: boolean
+}
+
+function AppWithRedux({demo = false}: PropsType) {
 
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
 
@@ -37,7 +41,7 @@ function AppWithRedux() {
                 { status === 'loading' && <LinearProgress />}
             </AppBar>
             <Container fixed>
-                <TodoListsList/>
+                <TodoListsList demo={demo}/>
             </Container>
         </div>
     );

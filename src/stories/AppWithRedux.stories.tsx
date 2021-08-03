@@ -1,8 +1,6 @@
 import React from 'react';
-import {ComponentStory, ComponentMeta, Story} from '@storybook/react';
-import {action} from "@storybook/addon-actions";
+import {ComponentMeta, Story} from '@storybook/react';
 import AppWithRedux from '../App/AppWithRedux';
-import {AppRootStateType} from "../store/store";
 import {ReduxStoreProviderDecorator} from "./decorators/ReduxStoreProviderDecorator";
 
 
@@ -14,7 +12,7 @@ export default {
 } as ComponentMeta<typeof AppWithRedux>;
 
 
-const Template: Story = () => <AppWithRedux />
+const Template: Story = () => <AppWithRedux demo={true}/>
 
 
 export const AppWithReduxExample = Template.bind({});

@@ -4,16 +4,17 @@ import {IconButton, TextField} from '@material-ui/core';
 
 export type AddItemPropsType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
-export const AddItemForm = React.memo((props: AddItemPropsType) => {
+export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemPropsType) => {
     const [title, setTitle] = useState<string>("");
     const [error, setError] = useState<boolean>(false);
 
     const onClickAddItem = () => {
         const trimmedTitle = title.trim()
         if (trimmedTitle) {
-            props.addItem(title)
+            addItem(title)
         } else {
             setError(true)
         }
@@ -34,6 +35,7 @@ export const AddItemForm = React.memo((props: AddItemPropsType) => {
 
     return <div>
         <TextField
+            disabled={disabled}
             variant={"outlined"}
             error={error}
             value={title}
@@ -49,7 +51,7 @@ export const AddItemForm = React.memo((props: AddItemPropsType) => {
         {/*       onKeyPress={onKeyPressAddItem}*/}
         {/*/>*/}
         {/*<button onClick={onClickAddItem}>+</button>*/}
-        <IconButton onClick={onClickAddItem} color={"primary"}>
+        <IconButton onClick={onClickAddItem} color={"primary"} disabled={disabled}>
             <AddBox/>
         </IconButton>
         {/*{errorMessage}*/}

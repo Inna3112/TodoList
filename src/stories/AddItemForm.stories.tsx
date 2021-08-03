@@ -9,7 +9,7 @@ export default {
     title: 'Todolist/AddItemForm',
     component: AddItemForm,
     argTypes: {
-        onClick: { description: 'Button inside form clicked' },
+        onClick: { description: 'Button inside form clicked' }
     },
 } as ComponentMeta<typeof AddItemForm>;
 
@@ -17,5 +17,11 @@ const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...
 
 export const AddItemFormExample = Template.bind({});
 AddItemFormExample.args = {
+    addItem: action('Button inside form clicked')
+}
+
+export const AddItemFormDisabledExample = Template.bind({});
+AddItemFormExample.args = {
+    disabled: true,
     addItem: action('Button inside form clicked')
 }

@@ -19,6 +19,9 @@ export const todoListsReducer = (todoLists = initialState, action: TodolistActio
             return [{...action.todoList, filter: 'all', entityStatus: 'idle'}, ...todoLists]
         case "CHANGE-TODOLIST-TITLE":
             return todoLists.map(tl => tl.id === action.todoListID ? {...tl, title: action.newTitle} : tl)
+        case "CHANGE-TODOLIST-ENTITY-STATUS":
+            return todoLists.map(tl => tl.id === action.todoListID ? {...tl, entityStatus: action.entityStatus} : tl)
+
         case "CHANGE-FILTER":
             return todoLists.map(tl => tl.id === action.todoListID ? {...tl, filter: action.filter} : tl)
         case "SET-TODOLISTS":
@@ -36,6 +39,8 @@ export const changeTodoListTitleAC = (newTitle: string, todoListID: string) =>
 export const changeFilterAC = (filter: FilterValuesType, todoListID: string) =>
     ({type: 'CHANGE-FILTER', filter, todoListID} as const)
 export const setTodoListsAC = (todoLists: Array<TodolistType>) => ({type: 'SET-TODOLISTS', todoLists} as const)
+export const changeTodoListEntityStatusAC = (todoListID: string, entityStatus: RequestStatusType) =>
+    ({type: 'CHANGE-TODOLIST-ENTITY-STATUS', todoListID, entityStatus} as const)
 
 //thunks
 export const fetchTodoListsTC = () => (dispatch: Dispatch<TodolistActionsType | SetStatusActionType>) => {
@@ -77,6 +82,7 @@ export type TodolistActionsType = RemoveTodoListAT
     | ReturnType<typeof changeTodoListTitleAC>
     | ReturnType<typeof changeFilterAC>
     | SetTodoListAT
+    | ReturnType<typeof changeTodoListEntityStatusAC>
 
 export type InitialTodoListsStateType = typeof initialState
 export type FilterValuesType = "all" | "active" | "completed"
