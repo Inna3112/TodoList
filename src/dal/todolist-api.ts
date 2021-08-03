@@ -79,7 +79,7 @@ export type UpdateTaskModel = {
     deadline: string
 }
 type GetTodoResponseType = TodolistType[]
-type CommonResponseType<T = {}> = {
+export type CommonResponseType<T = {}> = {
     resultCode: number
     fieldsErrors: string[]
     messages: string[]

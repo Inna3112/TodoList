@@ -28,9 +28,9 @@ export type InitialAppStateType = {
     //если произойдет какая-то глобальная ошибка - мы запишем ее сюда
     error: string | null
 }
-export type SetErrorActionType = ReturnType<typeof setAppErrorAC>
-export type SetStatusActionType = ReturnType<typeof setAppStatusAC>
+export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
+export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 
-type ActionType = SetErrorActionType | SetStatusActionType
+type ActionType = SetAppErrorActionType | SetAppStatusActionType
 
 export type RequestStatusType = 'idle' | 'loading' | 'successed' | 'failed'

@@ -1,7 +1,12 @@
 import {v1} from "uuid";
 import {todolistAPI, TodolistType} from "../dal/todolist-api";
 import {Dispatch} from "redux";
-import {RequestStatusType, setAppStatusAC, SetStatusActionType} from "./app-reducer";
+import {
+    RequestStatusType, SetAppErrorActionType,
+    setAppStatusAC,
+    SetAppStatusActionType
+} from "./app-reducer";
+import {TaskActionsType} from "./tasks-reducer";
 
 
 export const todoListID_1 = v1()
@@ -43,7 +48,7 @@ export const changeTodoListEntityStatusAC = (todoListID: string, entityStatus: R
     ({type: 'CHANGE-TODOLIST-ENTITY-STATUS', todoListID, entityStatus} as const)
 
 //thunks
-export const fetchTodoListsTC = () => (dispatch: Dispatch<TodolistActionsType | SetStatusActionType>) => {
+export const fetchTodoListsTC = () => (dispatch: Dispatch<ThunkDispatch>) => {
     dispatch(setAppStatusAC('loading'))
     todolistAPI.getTodo()
         .then(res => {
@@ -51,7 +56,7 @@ export const fetchTodoListsTC = () => (dispatch: Dispatch<TodolistActionsType | 
             dispatch(setAppStatusAC('successed'))
         })
 }
-export const removeTodoListTC = (todoListID: string) => (dispatch: Dispatch<TodolistActionsType | SetStatusActionType>) => {
+export const removeTodoListTC = (todoListID: string) => (dispatch: Dispatch<ThunkDispatch>) => {
     dispatch(setAppStatusAC('loading'))
     dispatch(changeTodoListEntityStatusAC(todoListID, 'loading'))
     todolistAPI.deleteTodo(todoListID)
@@ -60,7 +65,7 @@ export const removeTodoListTC = (todoListID: string) => (dispatch: Dispatch<Todo
             dispatch(setAppStatusAC('successed'))
         })
 }
-export const addTooListTC = (title: string) => (dispatch: Dispatch<TodolistActionsType | SetStatusActionType>) => {
+export const addTooListTC = (title: string) => (dispatch: Dispatch<ThunkDispatch>) => {
     dispatch(setAppStatusAC('loading'))
     todolistAPI.createTodo(title)
         .then(res => {
@@ -86,6 +91,7 @@ export type TodolistActionsType = RemoveTodoListAT
     | ReturnType<typeof changeFilterAC>
     | SetTodoListAT
     | ReturnType<typeof changeTodoListEntityStatusAC>
+type ThunkDispatch = TodolistActionsType | SetAppErrorActionType | SetAppStatusActionType
 
 export type InitialTodoListsStateType = typeof initialState
 export type FilterValuesType = "all" | "active" | "completed"
