@@ -3,7 +3,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../store/store";
-import {setErrorAC} from "../../store/app-reducer";
+import {setAppErrorAC} from "../../store/app-reducer";
 
 
 function Alert(props: AlertProps) {
@@ -20,7 +20,7 @@ export function ErrorSnackbar() {
         if (reason === 'clickaway') {
             return;
         }
-        dispatch(setErrorAC(null))
+        dispatch(setAppErrorAC(null))
     };
 
     return (
