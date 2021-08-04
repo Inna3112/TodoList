@@ -1,6 +1,6 @@
 import {v1} from 'uuid';
 import {
-    AddTodoListAT,
+    AddTodoListAT, FilterValuesType,
     RemoveTodoListAT, SetTodoListAT,
     todoListID_1,
     todoListID_2
@@ -8,45 +8,45 @@ import {
 import {taskAPI, TaskPriorities, TaskStatuses, TaskType, UpdateTaskModel} from '../dal/todolist-api';
 import {Dispatch} from 'redux';
 import {AppActionType, AppRootStateType} from './store';
-import {setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from './app-reducer';
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {RequestStatusType, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from './app-reducer';
+import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
 
 
-let initialState = {
-    [todoListID_1]: [
-        {
-            id: v1(), title: "HTML", status: TaskStatuses.Completed,
-            todoListId: todoListID_1, description: '', addedDate: '',
-            deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
-        },
-        {
-            id: v1(), title: "CSS", status: TaskStatuses.Completed,
-            todoListId: todoListID_1, description: '', addedDate: '',
-            deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
-        },
-        {
-            id: v1(), title: "JS", status: TaskStatuses.New,
-            todoListId: todoListID_1, description: '', addedDate: '',
-            deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
-        }
-    ],
-    [todoListID_2]: [
-        {
-            id: v1(), title: "Milk", status: TaskStatuses.Completed,
-            todoListId: todoListID_2, description: '', addedDate: '',
-            deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
-        },
-        {
-            id: v1(), title: "Meat", status: TaskStatuses.Completed,
-            todoListId: todoListID_2, description: '', addedDate: '',
-            deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
-        },
-        {
-            id: v1(), title: "Bread", status: TaskStatuses.New,
-            todoListId: todoListID_2, description: '', addedDate: '',
-            deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
-        }
-    ],
+let initialState: TaskStateType = {
+    // [todoListID_1]: [
+    //     {
+    //         id: v1(), title: "HTML", status: TaskStatuses.Completed,
+    //         todoListId: todoListID_1, description: '', addedDate: '',
+    //         deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
+    //     },
+    //     {
+    //         id: v1(), title: "CSS", status: TaskStatuses.Completed,
+    //         todoListId: todoListID_1, description: '', addedDate: '',
+    //         deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
+    //     },
+    //     {
+    //         id: v1(), title: "JS", status: TaskStatuses.New,
+    //         todoListId: todoListID_1, description: '', addedDate: '',
+    //         deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
+    //     }
+    // ],
+    // [todoListID_2]: [
+    //     {
+    //         id: v1(), title: "Milk", status: TaskStatuses.Completed,
+    //         todoListId: todoListID_2, description: '', addedDate: '',
+    //         deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
+    //     },
+    //     {
+    //         id: v1(), title: "Meat", status: TaskStatuses.Completed,
+    //         todoListId: todoListID_2, description: '', addedDate: '',
+    //         deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
+    //     },
+    //     {
+    //         id: v1(), title: "Bread", status: TaskStatuses.New,
+    //         todoListId: todoListID_2, description: '', addedDate: '',
+    //         deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
+    //     }
+    // ],
 }
 export type InitialTasksStateType = typeof initialState
 export const tasksReducer = (state = initialState, action: AppActionType): InitialTasksStateType => {
@@ -61,7 +61,7 @@ export const tasksReducer = (state = initialState, action: AppActionType): Initi
         case "ADD-TASK":
             return {
                 ...state,
-                [action.task.todoListId]: [action.task, ...state[action.task.todoListId]]
+                [action.task.todoListId]: [{...action.task, entityStatus: 'idle'}, ...state[action.task.todoListId]]
             }
 
         case "UPDATE-TASK":
@@ -69,6 +69,12 @@ export const tasksReducer = (state = initialState, action: AppActionType): Initi
                 ...state,
                 [action.todoListID]: state[action.todoListID]
                     .map(t => t.id === action.taskId ? {...t, ...action.model} : t)
+            }
+        case "CHANGE-TASK-ENTITY-STATUS":
+            return {
+                ...state,
+                [action.todoListID]: state[action.todoListID]
+                    .map(t => t.id === action.taskId ? {...t, entityStatus: 'loading'} : t)
             }
         case "ADD-TODOLIST":
             return {
@@ -91,7 +97,7 @@ export const tasksReducer = (state = initialState, action: AppActionType): Initi
             return copyState
         }
         case "SET-TASKS":
-            return {...state, [action.todoListID]: action.tasks}
+            return {...state, [action.todoListID]: action.tasks.map(t => ({...t, entityStatus: 'idle'}))}
         default:
             return state
     }
@@ -102,11 +108,10 @@ export const removeTaskAC = (taskId: string, todoListID: string) => ({type: 'REM
 export const addTaskAC = (task: TaskType) => ({type: 'ADD-TASK', task} as const)
 export const updateTaskAC = (taskId: string, model: UpdateDomainTaskModelType, todoListID: string) =>
     ({type: 'UPDATE-TASK', taskId, model, todoListID} as const)
-export const setTasksAC = (todoListID: string, tasks: Array<TaskType>) => ({
-    type: 'SET-TASKS',
-    todoListID,
-    tasks
-} as const)
+export const changeTaskEntityStatusAC = (taskId: string, todoListID: string) =>
+    ({type: 'CHANGE-TASK-ENTITY-STATUS', taskId, todoListID} as const)
+
+export const setTasksAC = (todoListID: string, tasks: Array<TaskType>) => ({type: 'SET-TASKS', todoListID, tasks} as const)
 
 //thunks
 export const fetchTasksTC = (todoId: string) => (dispatch: Dispatch<ThunkDispatch>) => {
@@ -119,6 +124,7 @@ export const fetchTasksTC = (todoId: string) => (dispatch: Dispatch<ThunkDispatc
 }
 export const removeTaskTC = (taskId: string, todoId: string) => (dispatch: Dispatch<ThunkDispatch>) => {
     dispatch(setAppStatusAC('loading'))
+    dispatch(changeTaskEntityStatusAC(taskId, todoId))
     taskAPI.deleteTask(todoId, taskId)
         .then(res => {
             if (res.data.resultCode === 0) {
@@ -179,6 +185,12 @@ export const changeTaskTC = (todoListID: string, domainModel: UpdateDomainTaskMo
     }
 
 //types
+export type TaskStateType = {
+    [key: string]: Array<TaskEntityType>
+}
+export type TaskEntityType = TaskType & {
+    entityStatus: RequestStatusType,
+}
 export type TaskActionsType =
     ReturnType<typeof removeTaskAC>
     | ReturnType<typeof addTaskAC>
@@ -187,6 +199,7 @@ export type TaskActionsType =
     | AddTodoListAT
     | SetTodoListAT
     | ReturnType<typeof setTasksAC>
+    | ReturnType<typeof changeTaskEntityStatusAC>
 
 type ThunkDispatch = TaskActionsType | SetAppErrorActionType | SetAppStatusActionType
 

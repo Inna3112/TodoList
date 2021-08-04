@@ -22,25 +22,25 @@ const initialGlobalState = {
         ["todolistId1"]: [
             {id: v1(), title: "HTML", status: TaskStatuses.Completed,
                 todoListId: "todolistId1", description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''},
             {id: v1(), title: "CSS", status: TaskStatuses.Completed,
                 todoListId: "todolistId1", description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''},
             {id: v1(), title: "JS", status: TaskStatuses.New,
                 todoListId: "todolistId1", description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''}
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''}
 
         ],
         ["todolistId2"]: [
             {id: v1(), title: "Milk", status: TaskStatuses.Completed,
                 todoListId: "todolistId2", description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''},
             {id: v1(), title: "Meat", status: TaskStatuses.Completed,
                 todoListId: "todolistId2", description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''},
             {id: v1(), title: "Bread", status: TaskStatuses.New,
                 todoListId: "todolistId2", description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''}
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''}
 
         ],
     },

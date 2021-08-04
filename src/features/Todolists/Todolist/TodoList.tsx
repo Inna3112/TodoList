@@ -4,15 +4,15 @@ import EditableSpan from '../../../components/EditableSpan/EditableSpan';
 import {Button, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
 import {Task} from './Task/Task';
-import {TaskStatuses, TaskType} from '../../../dal/todolist-api';
+import {TaskStatuses} from '../../../dal/todolist-api';
 import {FilterValuesType, TodoListEntityType} from '../../../store/todolists-reducer';
 import {useDispatch} from 'react-redux';
-import {fetchTasksTC} from '../../../store/tasks-reducer';
+import {fetchTasksTC, TaskEntityType} from '../../../store/tasks-reducer';
 
 
 type TodoListPropsType = {
     todoList: TodoListEntityType
-    tasks: Array<TaskType>
+    tasks: Array<TaskEntityType>
     addTask: (title: string, todoListID: string) => void
     removeTask: (taskId: string, todoListID: string) => void
     changeFilter: (value: FilterValuesType, todoListID: string) => void

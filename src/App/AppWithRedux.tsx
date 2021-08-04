@@ -10,10 +10,6 @@ import {AppRootStateType} from "../store/store";
 import { RequestStatusType } from '../store/app-reducer';
 
 
-export type TaskStateType = {
-    [key: string]: Array<TaskType>
-}
-
 type PropsType = {
     demo?: boolean
 }

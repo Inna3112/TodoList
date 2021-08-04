@@ -7,11 +7,9 @@ import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography}
 import {Menu} from '@material-ui/icons';
 import {TaskPriorities, TaskStatuses, TaskType} from '../dal/todolist-api';
 import {FilterValuesType, TodoListEntityType} from '../store/todolists-reducer';
+import {TaskStateType} from "../store/tasks-reducer";
 
 
-export type TaskStateType = {
-    [key: string]: Array<TaskType>
-}
 
 function App() {
     //BLL
@@ -26,24 +24,24 @@ function App() {
         [todoListID_1]: [
             {id: v1(), title: "HTML", status: TaskStatuses.Completed,
                 todoListId: todoListID_1, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''},
             {id: v1(), title: "CSS", status: TaskStatuses.Completed,
                 todoListId: todoListID_1, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''},
             {id: v1(), title: "JS", status: TaskStatuses.New,
                 todoListId: todoListID_1, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''}
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''}
         ],
         [todoListID_2]: [
             {id: v1(), title: "Milk", status: TaskStatuses.Completed,
                 todoListId: todoListID_2, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''},
             {id: v1(), title: "Meat", status: TaskStatuses.Completed,
                 todoListId: todoListID_2, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''},
             {id: v1(), title: "Bread", status: TaskStatuses.New,
                 todoListId: todoListID_2, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''}
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''}
         ],
     })
 
@@ -62,7 +60,7 @@ function App() {
             todoListId: todoListID, description: '', addedDate: '',
             deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''
         }
-        setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]})
+        setTasks({...tasks, [todoListID]: [{...newTask, entityStatus: 'idle',}, ...tasks[todoListID]]})
     }
 
     function changeTaskStatus(taskId: string, newStatus: TaskStatuses, todoListID: string) {

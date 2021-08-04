@@ -22,9 +22,6 @@ import {
 } from '../store/tasks-reducer';
 import {TaskPriorities, TaskStatuses} from "../dal/todolist-api";
 
-// export type TaskStateType = {
-//     [key: string]: Array<TaskType>
-// }
 
 function AppWithReducers() {
     //BLL
@@ -39,24 +36,24 @@ function AppWithReducers() {
         [todoListID_1]: [
             {id: v1(), title: "HTML", status: TaskStatuses.Completed,
                 todoListId: todoListID_1, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''},
             {id: v1(), title: "CSS", status: TaskStatuses.Completed,
                 todoListId: todoListID_1, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''},
             {id: v1(), title: "JS", status: TaskStatuses.New,
                 todoListId: todoListID_1, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''}
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''}
         ],
         [todoListID_2]: [
             {id: v1(), title: "Milk", status: TaskStatuses.Completed,
                 todoListId: todoListID_2, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''},
             {id: v1(), title: "Meat", status: TaskStatuses.Completed,
                 todoListId: todoListID_2, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''},
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''},
             {id: v1(), title: "Bread", status: TaskStatuses.New,
                 todoListId: todoListID_2, description: '', addedDate: '',
-                deadline: '', order: 0, priority: TaskPriorities.Low, startDate: ''}
+                deadline: '', entityStatus: 'idle', order: 0, priority: TaskPriorities.Low, startDate: ''}
         ],
     })
 
