@@ -112,10 +112,12 @@ export const fetchTasksTC = (todoId: string) => (dispatch: Dispatch<ThunkDispatc
             dispatch(setAppStatusAC('successed'))
         })
 }
-export const removeTaskTC = (taskId: string, todoId: string) => (dispatch: Dispatch<TaskActionsType>) => {
+export const removeTaskTC = (taskId: string, todoId: string) => (dispatch: Dispatch<ThunkDispatch>) => {
+    dispatch(setAppStatusAC('loading'))
     taskAPI.deleteTask(todoId, taskId)
         .then(res => {
             dispatch(removeTaskAC(taskId, todoId))
+            dispatch(setAppStatusAC('successed'))
         })
 }
 export const addTaskTC = (todoListID: string, title: string) => (dispatch: Dispatch<ThunkDispatch>) => {
