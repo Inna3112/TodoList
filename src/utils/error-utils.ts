@@ -1,6 +1,7 @@
-import {setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from "../store/app-reducer";
-import {CommonResponseType} from "../dal/todolist-api";
-import {Dispatch} from "redux";
+import {setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from '../store/app-reducer';
+import {CommonResponseType} from '../dal/todolist-api';
+import {Dispatch} from 'redux';
+import {AxiosError} from 'axios';
 
 export const handleServerAppError = <T>(data: CommonResponseType<T>, dispatch: Dispatch<SetAppErrorActionType | SetAppStatusActionType>) => {
     if (data.messages.length) {
@@ -11,7 +12,7 @@ export const handleServerAppError = <T>(data: CommonResponseType<T>, dispatch: D
     dispatch(setAppStatusAC('failed'))
 }
 
-export const handleServerNetworkError = (error: any, dispatch: Dispatch<SetAppErrorActionType | SetAppStatusActionType>) => {
+export const handleServerNetworkError = (error: AxiosError, dispatch: Dispatch<SetAppErrorActionType | SetAppStatusActionType>) => {
     dispatch(setAppErrorAC(error.message ? error.message : 'Some error!'))
     dispatch(setAppStatusAC('failed'))
 }
