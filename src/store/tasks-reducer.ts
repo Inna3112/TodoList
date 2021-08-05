@@ -1,7 +1,7 @@
 import {v1} from 'uuid';
 import {
     AddTodoListAT, FilterValuesType,
-    RemoveTodoListAT, SetTodoListAT,
+    RemoveTodoListAT, resultCodeType, SetTodoListAT,
     todoListID_1,
     todoListID_2
 } from './todolists-reducer';
@@ -121,13 +121,16 @@ export const fetchTasksTC = (todoId: string) => (dispatch: Dispatch<ThunkDispatc
             dispatch(setTasksAC(todoId, res.data.items))
             dispatch(setAppStatusAC('successed'))
         })
+        .catch(error => {
+            handleServerNetworkError(error, dispatch)
+        })
 }
 export const removeTaskTC = (taskId: string, todoId: string) => (dispatch: Dispatch<ThunkDispatch>) => {
     dispatch(setAppStatusAC('loading'))
     dispatch(changeTaskEntityStatusAC(taskId, todoId))
     taskAPI.deleteTask(todoId, taskId)
         .then(res => {
-            if (res.data.resultCode === 0) {
+            if (res.data.resultCode === resultCodeType.success) {
                 dispatch(removeTaskAC(taskId, todoId))
                 dispatch(setAppStatusAC('successed'))
             } else {
@@ -142,7 +145,7 @@ export const addTaskTC = (todoListID: string, title: string) => (dispatch: Dispa
     dispatch(setAppStatusAC('loading'))
     taskAPI.createTask(todoListID, title)
         .then(res => {
-            if (res.data.resultCode === 0) {
+            if (res.data.resultCode === resultCodeType.success) {
                 let task = res.data.data.item
                 dispatch(addTaskAC(task))
                 dispatch(setAppStatusAC('successed'))
@@ -173,7 +176,7 @@ export const changeTaskTC = (todoListID: string, domainModel: UpdateDomainTaskMo
         }
         taskAPI.updateTask(todoListID, taskID, apiModel)
             .then(res => {
-                if (res.data.resultCode === 0) {
+                if (res.data.resultCode === resultCodeType.success) {
                     dispatch(updateTaskAC(taskID, apiModel, todoListID))
                 } else {
                     handleServerAppError(res.data, dispatch)

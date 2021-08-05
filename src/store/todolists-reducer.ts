@@ -54,13 +54,16 @@ export const fetchTodoListsTC = () => (dispatch: Dispatch<ThunkDispatch>) => {
             dispatch(setTodoListsAC(res.data))
             dispatch(setAppStatusAC('successed'))
         })
+        .catch(error => {
+            handleServerNetworkError(error, dispatch)
+        })
 }
 export const removeTodoListTC = (todoListID: string) => (dispatch: Dispatch<ThunkDispatch>) => {
     dispatch(setAppStatusAC('loading'))
     dispatch(changeTodoListEntityStatusAC(todoListID, 'loading'))
     todolistAPI.deleteTodo(todoListID)
         .then(res => {
-            if (res.data.resultCode === 0) {
+            if (res.data.resultCode === resultCodeType.success) {
                 dispatch(removeTodoListAC(todoListID))
                 dispatch(setAppStatusAC('successed'))
             } else {
@@ -75,7 +78,7 @@ export const addTooListTC = (title: string) => (dispatch: Dispatch<ThunkDispatch
     dispatch(setAppStatusAC('loading'))
     todolistAPI.createTodo(title)
         .then(res => {
-            if (res.data.resultCode === 0) {
+            if (res.data.resultCode === resultCodeType.success) {
                 dispatch(addTodoListAC(res.data.data.item))
                 dispatch(setAppStatusAC('successed'))
             } else {
@@ -89,7 +92,7 @@ export const addTooListTC = (title: string) => (dispatch: Dispatch<ThunkDispatch
 export const changeTodoListTitleTC = (todoTitle: string, todoID: string) => (dispatch: Dispatch<ThunkDispatch>) => {
     todolistAPI.updateTodo(todoID, todoTitle)
         .then(res => {
-            if (res.data.resultCode === 0) {
+            if (res.data.resultCode === resultCodeType.success) {
                 dispatch(changeTodoListTitleAC(todoTitle, todoID))
             } else {
                 handleServerAppError(res.data, dispatch)
@@ -101,21 +104,27 @@ export const changeTodoListTitleTC = (todoTitle: string, todoID: string) => (dis
 }
 
 //types
-    export type RemoveTodoListAT = ReturnType<typeof removeTodoListAC>
-    export type AddTodoListAT = ReturnType<typeof addTodoListAC>
-    export type SetTodoListAT = ReturnType<typeof setTodoListsAC>
+export type RemoveTodoListAT = ReturnType<typeof removeTodoListAC>
+export type AddTodoListAT = ReturnType<typeof addTodoListAC>
+export type SetTodoListAT = ReturnType<typeof setTodoListsAC>
 
-    export type TodolistActionsType = RemoveTodoListAT
-        | AddTodoListAT
-        | ReturnType<typeof changeTodoListTitleAC>
-        | ReturnType<typeof changeFilterAC>
-        | SetTodoListAT
-        | ReturnType<typeof changeTodoListEntityStatusAC>
-    type ThunkDispatch = TodolistActionsType | SetAppErrorActionType | SetAppStatusActionType
+export type TodolistActionsType = RemoveTodoListAT
+    | AddTodoListAT
+    | ReturnType<typeof changeTodoListTitleAC>
+    | ReturnType<typeof changeFilterAC>
+    | SetTodoListAT
+    | ReturnType<typeof changeTodoListEntityStatusAC>
+type ThunkDispatch = TodolistActionsType | SetAppErrorActionType | SetAppStatusActionType
 
-    export type InitialTodoListsStateType = typeof initialState
-    export type FilterValuesType = "all" | "active" | "completed"
-    export type TodoListEntityType = TodolistType & {
-        filter: FilterValuesType,
-        entityStatus: RequestStatusType,
-    }
+export type InitialTodoListsStateType = typeof initialState
+export type FilterValuesType = "all" | "active" | "completed"
+export type TodoListEntityType = TodolistType & {
+    filter: FilterValuesType,
+    entityStatus: RequestStatusType,
+}
+
+export enum resultCodeType {
+    success = 0,
+    error = 1,
+    captcha = 10
+}
