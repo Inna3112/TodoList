@@ -92,7 +92,7 @@ export const addTooListTC = (title: string) => (dispatch: Dispatch<ThunkDispatch
 export const changeTodoListTitleTC = (todoTitle: string, todoID: string) => (dispatch: Dispatch<ThunkDispatch>) => {
     todolistAPI.updateTodo(todoID, todoTitle)
         .then(res => {
-            if (res.data.resultCode === resultCodeType.success) {
+            if (res.data.resultCode === resultCodeType.success ) {
                 dispatch(changeTodoListTitleAC(todoTitle, todoID))
             } else {
                 handleServerAppError(res.data, dispatch)

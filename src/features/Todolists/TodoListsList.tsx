@@ -1,18 +1,18 @@
-import React, {useCallback, useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../store/store";
-import {addTaskTC, changeTaskTC, InitialTasksStateType, removeTaskTC} from "../../store/tasks-reducer";
+import React, {useCallback, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppRootStateType} from '../../store/store';
+import {addTaskTC, changeTaskTC, InitialTasksStateType, removeTaskTC} from '../../store/tasks-reducer';
 import {
     addTooListTC,
     changeFilterAC, changeTodoListTitleTC,
     fetchTodoListsTC,
     FilterValuesType,
     InitialTodoListsStateType, removeTodoListTC
-} from "../../store/todolists-reducer";
-import {TaskStatuses} from "../../dal/todolist-api";
-import {Grid, Paper} from "@material-ui/core";
-import TodoList from "./Todolist/TodoList";
-import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
+} from '../../store/todolists-reducer';
+import {TaskStatuses} from '../../dal/todolist-api';
+import {Grid, Paper} from '@material-ui/core';
+import TodoList from './Todolist/TodoList';
+import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 
 type PropsType = {
     demo?: boolean

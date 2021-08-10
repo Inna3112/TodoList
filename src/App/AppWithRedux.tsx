@@ -2,12 +2,11 @@ import React from 'react';
 import './App.css';
 import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
-import {TaskType} from '../dal/todolist-api';
 import TodoListsList from '../features/Todolists/TodoListsList';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
-import {useSelector} from "react-redux";
-import {AppRootStateType} from "../store/store";
-import { RequestStatusType } from '../store/app-reducer';
+import {useSelector} from 'react-redux';
+import {AppRootStateType} from '../store/store';
+import {RequestStatusType} from '../store/app-reducer';
 
 
 type PropsType = {
