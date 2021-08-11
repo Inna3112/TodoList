@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -35,6 +35,11 @@ export const taskAPI = {
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModel){
         return instance.put<CommonResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`, model)
+    }
+}
+export const authAPI = {
+    login(data: LoginParamsType ){
+        return instance.post(`auth/login`, data)
     }
 }
 
@@ -89,6 +94,12 @@ type GetTasksResponseType = {
     error: string | null
     items: TaskType[]
     totalCount: number
+}
+type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
 }
 
 
