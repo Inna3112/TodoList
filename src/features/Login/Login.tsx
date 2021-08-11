@@ -8,6 +8,8 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import {useFormik} from "formik";
+import {useDispatch} from "react-redux";
+import {loginTC} from "../../store/auth-reducer";
 
 type FormikErrorType = {
     email?: string
@@ -16,7 +18,7 @@ type FormikErrorType = {
 }
 
 export const Login = () => {
-
+    const dispatch = useDispatch()
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -39,7 +41,8 @@ export const Login = () => {
         },
 
         onSubmit: values => {
-            alert(JSON.stringify(values))
+            // alert(JSON.stringify(values))
+            dispatch(loginTC(values))
             formik.resetForm()
         }
     })

@@ -39,7 +39,7 @@ export const taskAPI = {
 }
 export const authAPI = {
     login(data: LoginParamsType ){
-        return instance.post(`auth/login`, data)
+        return instance.post<CommonResponseType<{userId: number}>>(`auth/login`, data)
     }
 }
 
@@ -95,7 +95,7 @@ type GetTasksResponseType = {
     items: TaskType[]
     totalCount: number
 }
-type LoginParamsType = {
+export type LoginParamsType = {
     email: string
     password: string
     rememberMe: boolean
