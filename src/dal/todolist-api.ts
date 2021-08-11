@@ -40,6 +40,9 @@ export const taskAPI = {
 export const authAPI = {
     login(data: LoginParamsType ){
         return instance.post<CommonResponseType<{userId: number}>>(`auth/login`, data)
+    },
+    me() {
+        return instance.get<CommonResponseType<AuthMeResponseType>>(`auth/me`)
     }
 }
 
@@ -100,6 +103,11 @@ export type LoginParamsType = {
     password: string
     rememberMe: boolean
     captcha?: string
+}
+type AuthMeResponseType = {
+    id: number
+    email: string
+    login: string
 }
 
 
