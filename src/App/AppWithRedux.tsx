@@ -16,6 +16,7 @@ import {initializeAppTC, RequestStatusType} from '../store/app-reducer';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import {Login} from '../features/Login/Login';
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {logoutTC} from "../store/auth-reducer";
 
 
 type PropsType = {
@@ -26,7 +27,7 @@ function AppWithRedux({demo = false}: PropsType) {
     const dispatch = useDispatch()
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
-
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     useEffect(() => {
         dispatch(initializeAppTC())
     }, [])
@@ -38,7 +39,9 @@ function AppWithRedux({demo = false}: PropsType) {
         </div>
 
     }
-
+    const logoutHandler = () => {
+        dispatch(logoutTC())
+    }
     return (
         <div>
             <ErrorSnackbar/>
@@ -50,10 +53,14 @@ function AppWithRedux({demo = false}: PropsType) {
                     <Typography variant={"h6"}>
                         Todolists
                     </Typography>
+
+                    {isLoggedIn &&
                     <Button
                         color={"inherit"}
                         variant={"outlined"}
-                    >Login</Button>
+                        onClick={logoutHandler}
+                    >Logout</Button>}
+                    
                 </Toolbar>
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>
