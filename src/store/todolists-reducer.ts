@@ -7,6 +7,7 @@ import {
     SetAppStatusActionType
 } from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {fetchTasksTC, TaskActionsType} from "./tasks-reducer";
 
 
 export const todoListID_1 = v1()
@@ -30,6 +31,8 @@ export const todoListsReducer = (todoLists = initialState, action: TodolistActio
             return todoLists.map(tl => tl.id === action.todoListID ? {...tl, filter: action.filter} : tl)
         case "SET-TODOLISTS":
             return action.todoLists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
+        case "CLEAR-TODOLISTS-DATA":
+            return []
         default:
             return todoLists
     }
@@ -45,14 +48,22 @@ export const changeFilterAC = (filter: FilterValuesType, todoListID: string) =>
 export const setTodoListsAC = (todoLists: Array<TodolistType>) => ({type: 'SET-TODOLISTS', todoLists} as const)
 export const changeTodoListEntityStatusAC = (todoListID: string, entityStatus: RequestStatusType) =>
     ({type: 'CHANGE-TODOLIST-ENTITY-STATUS', todoListID, entityStatus} as const)
+export const clearTodoListsDataAC = () => ({type: 'CLEAR-TODOLISTS-DATA'} as const)
 
 //thunks
-export const fetchTodoListsTC = () => (dispatch: Dispatch<ThunkDispatch>) => {
+export const fetchTodoListsTC = () => (dispatch: any) => {
     dispatch(setAppStatusAC('loading'))
     todolistAPI.getTodo()
         .then(res => {
             dispatch(setTodoListsAC(res.data))
             dispatch(setAppStatusAC('successed'))
+            return res.data
+        })
+        .then(todos => {
+            todos.forEach(tl => {
+                    dispatch(fetchTasksTC(tl.id))
+                }
+            )
         })
         .catch(error => {
             handleServerNetworkError(error, dispatch)
@@ -92,7 +103,7 @@ export const addTooListTC = (title: string) => (dispatch: Dispatch<ThunkDispatch
 export const changeTodoListTitleTC = (todoTitle: string, todoID: string) => (dispatch: Dispatch<ThunkDispatch>) => {
     todolistAPI.updateTodo(todoID, todoTitle)
         .then(res => {
-            if (res.data.resultCode === resultCodeType.success ) {
+            if (res.data.resultCode === resultCodeType.success) {
                 dispatch(changeTodoListTitleAC(todoTitle, todoID))
             } else {
                 handleServerAppError(res.data, dispatch)
@@ -107,6 +118,7 @@ export const changeTodoListTitleTC = (todoTitle: string, todoID: string) => (dis
 export type RemoveTodoListAT = ReturnType<typeof removeTodoListAC>
 export type AddTodoListAT = ReturnType<typeof addTodoListAC>
 export type SetTodoListAT = ReturnType<typeof setTodoListsAC>
+export type ClearTodoListDataAT = ReturnType<typeof clearTodoListsDataAC>
 
 export type TodolistActionsType = RemoveTodoListAT
     | AddTodoListAT
@@ -114,7 +126,9 @@ export type TodolistActionsType = RemoveTodoListAT
     | ReturnType<typeof changeFilterAC>
     | SetTodoListAT
     | ReturnType<typeof changeTodoListEntityStatusAC>
-type ThunkDispatch = TodolistActionsType | SetAppErrorActionType | SetAppStatusActionType
+    | ClearTodoListDataAT
+
+type ThunkDispatch = TodolistActionsType | SetAppErrorActionType | SetAppStatusActionType | SetTodoListAT
 
 export type InitialTodoListsStateType = typeof initialState
 export type FilterValuesType = "all" | "active" | "completed"

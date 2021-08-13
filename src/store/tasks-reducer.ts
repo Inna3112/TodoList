@@ -1,6 +1,6 @@
 import {v1} from 'uuid';
 import {
-    AddTodoListAT, FilterValuesType,
+    AddTodoListAT, ClearTodoListDataAT, FilterValuesType,
     RemoveTodoListAT, resultCodeType, SetTodoListAT,
     todoListID_1,
     todoListID_2
@@ -98,6 +98,8 @@ export const tasksReducer = (state = initialState, action: AppActionType): Initi
         }
         case "SET-TASKS":
             return {...state, [action.todoListID]: action.tasks.map(t => ({...t, entityStatus: 'idle'}))}
+        case "CLEAR-TODOLISTS-DATA":
+            return {}
         default:
             return state
     }
@@ -111,7 +113,11 @@ export const updateTaskAC = (taskId: string, model: UpdateDomainTaskModelType, t
 export const changeTaskEntityStatusAC = (taskId: string, todoListID: string) =>
     ({type: 'CHANGE-TASK-ENTITY-STATUS', taskId, todoListID} as const)
 
-export const setTasksAC = (todoListID: string, tasks: Array<TaskType>) => ({type: 'SET-TASKS', todoListID, tasks} as const)
+export const setTasksAC = (todoListID: string, tasks: Array<TaskType>) => ({
+    type: 'SET-TASKS',
+    todoListID,
+    tasks
+} as const)
 
 //thunks
 export const fetchTasksTC = (todoId: string) => (dispatch: Dispatch<ThunkDispatch>) => {
@@ -203,6 +209,7 @@ export type TaskActionsType =
     | SetTodoListAT
     | ReturnType<typeof setTasksAC>
     | ReturnType<typeof changeTaskEntityStatusAC>
+    | ClearTodoListDataAT
 
 type ThunkDispatch = TaskActionsType | SetAppErrorActionType | SetAppStatusActionType
 
